@@ -1,4 +1,6 @@
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import { apiTriviaToken } from '../service/apiTrivia';
 
 class Login extends Component {
   constructor() {
@@ -7,6 +9,12 @@ class Login extends Component {
       playerName: '',
       playerEmail: '',
     };
+  }
+
+  saveTokenToLocal = async () => {
+    const response = await apiTriviaToken();
+    console.log(typeof response);
+    localStorage.setItem('token', response);
   }
 
   handleChange = ({ target }) => {
@@ -23,6 +31,7 @@ class Login extends Component {
 
   render() {
     const { playerName, playerEmail } = this.state;
+    const { history } = this.props;
     return (
       <div>
         <form>
@@ -45,7 +54,10 @@ class Login extends Component {
           <button
             type="button"
             data-testid="btn-play"
-            onClick={ () => {} }
+            onClick={ () => {
+              this.saveTokenToLocal();
+              history.push('/game');
+            } }
             disabled={ this.verifyInputs() }
           >
             Play
@@ -55,5 +67,11 @@ class Login extends Component {
     );
   }
 }
+
+Login.propTypes = {
+  history: PropTypes.shape({
+    push: PropTypes.func,
+  }).isRequired,
+};
 
 export default Login;

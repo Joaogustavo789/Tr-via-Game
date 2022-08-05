@@ -3,6 +3,7 @@ import { Route, Switch } from 'react-router-dom';
 import logo from './trivia.png';
 import './App.css';
 import Login from './pages/Login';
+import Game from './pages/Game';
 
 export default function App() {
   // VQV!
@@ -12,7 +13,8 @@ export default function App() {
         <img src={ logo } className="App-logo" alt="logo" />
         <p>SUA VEZ</p>
         <Switch>
-          <Route exect path="/" component={ Login } />
+          <Route path="/game" component={ Game } />
+          <Route exact path="/" component={ Login } />
         </Switch>
       </header>
     </div>
