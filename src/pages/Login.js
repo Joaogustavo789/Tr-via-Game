@@ -13,7 +13,6 @@ class Login extends Component {
 
   saveTokenToLocal = async () => {
     const response = await apiTriviaToken();
-    console.log(typeof response);
     localStorage.setItem('token', response);
   }
 
