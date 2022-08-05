@@ -4,6 +4,7 @@ import logo from './trivia.png';
 import './App.css';
 import Login from './pages/Login';
 import Game from './pages/Game';
+import Settings from './pages/Settings';
 
 export default function App() {
   // VQV!
@@ -15,6 +16,7 @@ export default function App() {
         <Switch>
           <Route path="/game" component={ Game } />
           <Route exact path="/" component={ Login } />
+          <Route path="/settings" component={ Settings } />
         </Switch>
       </header>
     </div>
