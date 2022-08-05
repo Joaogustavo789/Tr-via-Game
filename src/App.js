@@ -3,6 +3,7 @@ import logo from './trivia.png';
 import './App.css';
 
 export default function App() {
+  // VQV!
   return (
     <div className="App">
       <header className="App-header">
