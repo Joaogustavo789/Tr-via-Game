@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { apiTriviaToken } from '../service/apiTrivia';
 
 class Login extends Component {
   constructor() {
@@ -8,6 +9,11 @@ class Login extends Component {
       playerName: '',
       playerEmail: '',
     };
+  }
+
+  saveTokenToLocal = async () => {
+    const response = await apiTriviaToken();
+    localStorage.setItem('token', response);
   }
 
   handleChange = ({ target }) => {
@@ -47,7 +53,10 @@ class Login extends Component {
           <button
             type="button"
             data-testid="btn-play"
-            onClick={ () => {} }
+            onClick={ () => {
+              this.saveTokenToLocal();
+              push('/game');
+            } }
             disabled={ this.verifyInputs() }
           >
             Play
