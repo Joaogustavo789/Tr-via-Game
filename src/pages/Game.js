@@ -10,6 +10,7 @@ class Game extends React.Component {
       resultsTriviaApi: [],
       indexQuestion: 0,
       newArray: [],
+      clickAnswer: false,
     };
   }
 
@@ -44,8 +45,22 @@ class Game extends React.Component {
     return `wrong-answer-${wrongAnswer}`;
   }
 
+  answerChosen = () => {
+    this.setState({
+      clickAnswer: true,
+    });
+  }
+
+  altClassNames = (element) => {
+    const { resultsTriviaApi, indexQuestion } = this.state;
+    if (element === resultsTriviaApi[indexQuestion].correct_answer) {
+      return 'correct-answer';
+    }
+    return 'incorrect-answer';
+  }
+
   render() {
-    const { resultsTriviaApi, indexQuestion, newArray } = this.state;
+    const { resultsTriviaApi, indexQuestion, newArray, clickAnswer } = this.state;
     return (
       <div>
         <Header />
@@ -67,6 +82,10 @@ class Game extends React.Component {
                   key={ index }
                   type="button"
                   data-testid={ this.getDataTestIdAnswers(element) }
+                  onClick={ this.answerChosen }
+                  className={
+                    clickAnswer ? this.altClassNames(element) : ''
+                  }
                 >
                   {element}
                 </button>
