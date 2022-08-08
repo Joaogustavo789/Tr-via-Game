@@ -18,6 +18,7 @@ class Game extends React.Component {
   }
 
   getTriviaApi = async () => {
+    const numberRandom = 0.5;
     const { indexQuestion } = this.state;
     const { history: { push } } = this.props;
     const returnTriviaApi = await apiTrivia();
@@ -25,7 +26,8 @@ class Game extends React.Component {
       this.setState({
         resultsTriviaApi: returnTriviaApi,
         newArray: [returnTriviaApi[indexQuestion].correct_answer,
-          ...returnTriviaApi[indexQuestion].incorrect_answers],
+          ...returnTriviaApi[indexQuestion].incorrect_answers]
+          .sort(() => Math.random() - numberRandom),
       });
     } else {
       push('/');
@@ -60,7 +62,7 @@ class Game extends React.Component {
               { resultsTriviaApi[indexQuestion].question }
             </h2>
             <div data-testid="answer-options">
-              { newArray.sort().map((element, index) => (
+              { newArray.map((element, index) => (
                 <button
                   key={ index }
                   type="button"
