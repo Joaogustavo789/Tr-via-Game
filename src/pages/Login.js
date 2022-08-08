@@ -61,8 +61,8 @@ class Login extends Component {
           <button
             type="button"
             data-testid="btn-play"
-            onClick={ () => {
-              this.saveTokenToLocal();
+            onClick={ async () => {
+              await this.saveTokenToLocal();
               requireGravatar(this.convertEmail());
               saveName(playerName);
               push('/game');
