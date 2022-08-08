@@ -6,8 +6,20 @@ export const apiTriviaToken = async () => {
 };
 
 export const apiTrivia = async () => {
-  // const five = 5;
-  // const urlTrivia = `https://opentdb.com/api.php?amount=${five}&token=${token}`;
-  // const responseApi = await fetch(urlTrivia);
-  // const objTrivia = await responseApi.json();
+  try {
+    const five = 5;
+    const three = 3;
+    const token = localStorage.getItem('token');
+    const urlTrivia = `https://opentdb.com/api.php?amount=${five}&token=${token}`;
+    const responseApi = await fetch(urlTrivia);
+    const objTrivia = await responseApi.json();
+    if (objTrivia.response_code === three) {
+      localStorage.removeItem('token');
+      throw new Error('Token inválido');
+    } else {
+      return objTrivia.results;
+    }
+  } catch (error) {
+    console.log(error.message);
+  }
 };
