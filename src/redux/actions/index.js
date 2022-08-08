@@ -1,5 +1,4 @@
 import * as types from './actionTypes';
-// import { apiGravatar } from '../../service/apiTrivia';
 
 export const saveNameAction = (name) => ({
   type: types.SAVE_NAME,

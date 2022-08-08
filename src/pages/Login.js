@@ -89,6 +89,7 @@ Login.propTypes = {
     push: PropTypes.func,
   }),
   saveName: PropTypes.func,
+  requireGravatar: PropTypes.func,
 }.isRequired;
 
 const mapDispatchToProps = (dispatch) => ({
