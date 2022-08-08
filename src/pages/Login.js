@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import md5 from 'crypto-js/md5';
+import { connect } from 'react-redux';
 import { apiTriviaToken } from '../service/apiTrivia';
+import { saveNameAction, requireGravatarAction } from '../redux/actions/index';
 
 class Login extends Component {
   constructor() {
@@ -28,9 +31,14 @@ class Login extends Component {
     return !(playerName.length >= minLength && validEmail);
   }
 
+  convertEmail = () => {
+    const { playerEmail } = this.state;
+    return md5(playerEmail).toString();
+  }
+
   render() {
     const { playerName, playerEmail } = this.state;
-    const { history: { push } } = this.props;
+    const { history: { push }, saveName, requireGravatar } = this.props;
     return (
       <div>
         <form>
@@ -55,6 +63,8 @@ class Login extends Component {
             data-testid="btn-play"
             onClick={ () => {
               this.saveTokenToLocal();
+              requireGravatar(this.convertEmail());
+              saveName(playerName);
               push('/game');
             } }
             disabled={ this.verifyInputs() }
@@ -77,7 +87,13 @@ class Login extends Component {
 Login.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func,
-  }).isRequired,
-};
+  }),
+  saveName: PropTypes.func,
+}.isRequired;
 
-export default Login;
+const mapDispatchToProps = (dispatch) => ({
+  saveName: (name) => dispatch(saveNameAction(name)),
+  requireGravatar: (hashEmail) => dispatch(requireGravatarAction(hashEmail)),
+});
+
+export default connect(null, mapDispatchToProps)(Login);
