@@ -23,6 +23,7 @@ class Header extends Component {
 
 Header.propTypes = {
   name: PropTypes.string,
+  gravatarEmail: PropTypes.string,
 }.isRequired;
 
 const mapStateToProps = (store) => ({
