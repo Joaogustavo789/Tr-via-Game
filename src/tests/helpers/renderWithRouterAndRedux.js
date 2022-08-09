@@ -24,4 +24,5 @@ export const renderWithRouterAndRedux = (component, initialState, route = '/') =
   };
 };
 
+//
 export default renderWithRouterAndRedux;
