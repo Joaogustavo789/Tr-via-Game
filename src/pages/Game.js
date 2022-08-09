@@ -11,11 +11,37 @@ class Game extends React.Component {
       indexQuestion: 0,
       newArray: [],
       clickAnswer: false,
+      timer: 30,
+      isDisable: false,
     };
   }
 
   componentDidMount() {
     this.getTriviaApi();
+    this.setQuestionTimer();
+  }
+
+  componentDidUpdate(_prevProps, prevState) {
+    if (prevState.timer === 0) {
+      clearInterval(this.timerInterval);
+      this.setState({
+        isDisable: true,
+        timer: 0,
+      });
+    }
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.timerInterval);
+  }
+
+  setQuestionTimer = () => {
+    const oneSecond = 1000;
+    this.timerInterval = setInterval(() => {
+      this.setState((prevState) => ({
+        timer: prevState.timer - 1,
+      }));
+    }, oneSecond);
   }
 
   getTriviaApi = async () => {
@@ -60,11 +86,20 @@ class Game extends React.Component {
   }
 
   render() {
-    const { resultsTriviaApi, indexQuestion, newArray, clickAnswer } = this.state;
+    const {
+      resultsTriviaApi,
+      indexQuestion,
+      newArray,
+      clickAnswer,
+      timer,
+      isDisable } = this.state;
     return (
       <div>
         <Header />
         <main>
+          <h3>
+            {timer}
+          </h3>
           { resultsTriviaApi.length > 0
         && (
           <section>
@@ -83,6 +118,7 @@ class Game extends React.Component {
                   type="button"
                   data-testid={ this.getDataTestIdAnswers(element) }
                   onClick={ this.answerChosen }
+                  disabled={ isDisable }
                   className={
                     clickAnswer ? this.altClassNames(element) : ''
                   }
