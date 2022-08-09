@@ -1,12 +1,19 @@
 import React from "react";
-import { screen } from "@testing-library/react";
+import { screen, waitFor } from "@testing-library/react";
 import renderWithRouterAndRedux from "./helpers/renderWithRouterAndRedux";
 import userEvent from "@testing-library/user-event";
 import App from '../App'
 
+const { questionsResponse } = require('../../cypress/mocks/questions');
+const { tokenResponse } = require('../../cypress/mocks/token');
+
 describe('Testes de cobertura para tela de Login', () => {
+  afterEach(() => {
+    jest.resetAllMocks();
+  });
+
   test('Verifica se a tela inicial é renderizada corretamente', () => {
-    const { history } = renderWithRouterAndRedux(<App />)
+    const { history } = renderWithRouterAndRedux(<App />);
 
     const { location: { pathname } } = history;
     expect(pathname).toBe('/');
@@ -31,25 +38,6 @@ describe('Testes de cobertura para tela de Login', () => {
     expect(btnPlay).not.toBeDisabled();
   });
 
-  test('Verifica se ao clicar no botão Play, a tela Game é renderizada', () => {
-    const { history } = renderWithRouterAndRedux(<App />)
-    
-    const btnPlay = screen.getByRole('button',{ name: /play/i });
-    const inputName = screen.getByTestId('input-player-name');
-    const inputEmail = screen.getByTestId('input-gravatar-email');
-    
-    userEvent.type(inputName, 'exemplo');
-    userEvent.type(inputEmail, 'exe@mplo.com');
-    expect(btnPlay).not.toBeDisabled();
-
-    userEvent.click(btnPlay);
-    
-    const { location: { pathname } } = history;
-    expect(pathname).toBe('/game');
-
-    expect(screen.getByText('Game')).toBeInTheDocument();
-  });
-
   test('Verifica se ao clicar no botão configurações, a tela de configurações é renderizada', () => {
     const { history } = renderWithRouterAndRedux(<App />);
 
@@ -59,5 +47,26 @@ describe('Testes de cobertura para tela de Login', () => {
     const { location: { pathname } } = history;
     expect(pathname).toBe('/settings')
     expect(screen.getByText(/configurações/i)).toBeInTheDocument();
+  });
+
+  test('Verifica se redireciona para a página game após clicar no botão play', async () => {
+    jest.spyOn(global, 'fetch')
+    global.fetch.mockResolvedValue({
+      json: jest.fn().mockResolvedValue(questionsResponse),
+    });
+
+    const {history} = renderWithRouterAndRedux(<App />);
+
+    const inputName = screen.getByTestId('input-player-name');
+    const inputEmail = screen.getByTestId('input-gravatar-email');
+    const buttonPlay = screen.getByRole('button', {name: /Play/i});
+
+    userEvent.type(inputName, 'alguem');
+    userEvent.type(inputEmail, 'alguem@email.com');
+    userEvent.click(buttonPlay);
+
+    await waitFor(() => expect(fetch).toHaveBeenCalled());
+    const { location: { pathname } } = history
+    expect(pathname).toBe('/game');
   });
 });
