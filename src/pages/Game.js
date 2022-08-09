@@ -24,11 +24,16 @@ class Game extends React.Component {
   }
 
   componentDidUpdate(_prevProps, prevState) {
+    this.updateTimer(prevState);
+  }
+
+  updateTimer = (prevState) => {
     if (prevState.timer === 0) {
       clearInterval(this.timerInterval);
       this.setState({
         isDisable: true,
         timer: 0,
+        clickAnswer: true,
       });
     }
   }
@@ -73,6 +78,7 @@ class Game extends React.Component {
     this.setState({
       clickAnswer: true,
     });
+    clearInterval(this.timerInterval);
   }
 
   altClassNames = (element) => {
@@ -101,22 +107,48 @@ class Game extends React.Component {
     }
   };
 
-  render() {
-    const {
-      resultsTriviaApi,
-      indexQuestion,
-      newArray,
-      clickAnswer,
-      timer,
-      isDisable } = this.state;
-    return (
-      <div>
-        <Header />
-        <main>
-          <h3>
-            {timer}
-          </h3>
-          { resultsTriviaApi.length > 0
+  nextQuestion = () => {
+    const { history } = this.props;
+    const { indexQuestion, resultsTriviaApi } = this.state;
+    if (indexQuestion < resultsTriviaApi.length - 1) {
+      this.setState((prev) => ({
+        timer: 30,
+        indexQuestion: prev.indexQuestion + 1,
+        clickAnswer: false,
+
+      }), () => this.teste());
+    } else {
+      history.push('/feedback');
+    }
+  }
+
+ teste = () => {
+   const numberRandom = 0.5;
+   const { indexQuestion, resultsTriviaApi } = this.state;
+   this.setState({
+     newArray: [resultsTriviaApi[indexQuestion].correct_answer,
+       ...resultsTriviaApi[indexQuestion].incorrect_answers]
+       .sort(() => Math.random() - numberRandom),
+   });
+ }
+
+ render() {
+   const {
+     resultsTriviaApi,
+     indexQuestion,
+     newArray,
+     clickAnswer,
+     timer,
+     isDisable } = this.state;
+
+   return (
+     <div>
+       <Header />
+       <main>
+         <h3>
+           {timer}
+         </h3>
+         { resultsTriviaApi.length > 0
         && (
           <section>
             <h1 data-testid="question-category">
@@ -146,12 +178,26 @@ class Game extends React.Component {
                 </button>
               )) }
             </div>
+            {
+              clickAnswer
+            && (
+              <button
+                type="button"
+                data-testid="btn-next"
+                onClick={ this.nextQuestion }
+              >
+                Next
+
+              </button>
+            )
+            }
+
           </section>
         )}
-        </main>
-      </div>
-    );
-  }
+       </main>
+     </div>
+   );
+ }
 }
 
 const mapDispatchToProps = (dispatch) => ({
