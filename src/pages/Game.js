@@ -117,6 +117,7 @@ class Game extends React.Component {
         clickAnswer: false,
 
       }), () => this.teste());
+      this.setQuestionTimer();
     } else {
       history.push('/feedback');
     }
