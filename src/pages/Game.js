@@ -31,10 +31,6 @@ class Game extends React.Component {
     }
   }
 
-  componentWillUnmount() {
-    clearInterval(this.timerInterval);
-  }
-
   setQuestionTimer = () => {
     const oneSecond = 1000;
     this.timerInterval = setInterval(() => {
