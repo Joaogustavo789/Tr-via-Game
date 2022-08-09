@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { apiTrivia } from '../service/apiTrivia';
 import Header from '../components/Header';
-import { saveScoreAction } from '../redux/actions';
+import { saveScoreAction, feedbackScoreAction } from '../redux/actions';
 
 class Game extends React.Component {
   constructor() {
@@ -90,7 +90,7 @@ class Game extends React.Component {
   }
 
   verifyCorrectAnswer = (element) => {
-    const { newScore } = this.props;
+    const { newScore, feedbackAssertions } = this.props;
     const { resultsTriviaApi, indexQuestion, timer } = this.state;
     const hardScore = 3;
     let difficultyScore = resultsTriviaApi[indexQuestion].difficulty;
@@ -104,6 +104,7 @@ class Game extends React.Component {
 
     if (resultsTriviaApi[indexQuestion].correct_answer === element) {
       newScore(timer, difficultyScore);
+      feedbackAssertions();
     }
   };
 
@@ -116,14 +117,14 @@ class Game extends React.Component {
         indexQuestion: prev.indexQuestion + 1,
         clickAnswer: false,
 
-      }), () => this.teste());
+      }), () => this.newQuestionArray());
       this.setQuestionTimer();
     } else {
       history.push('/feedback');
     }
   }
 
- teste = () => {
+ newQuestionArray = () => {
    const numberRandom = 0.5;
    const { indexQuestion, resultsTriviaApi } = this.state;
    this.setState({
@@ -203,6 +204,7 @@ class Game extends React.Component {
 
 const mapDispatchToProps = (dispatch) => ({
   newScore: (timer, difficulty) => dispatch(saveScoreAction(timer, difficulty)),
+  feedbackAssertions: () => dispatch(feedbackScoreAction()),
 });
 
 Game.propTypes = {
@@ -210,6 +212,7 @@ Game.propTypes = {
     push: PropTypes.func,
   }).isRequired,
   newScore: PropTypes.func.isRequired,
+  feedbackAssertions: PropTypes.func.isRequired,
 };
 
 export default connect(null, mapDispatchToProps)(Game);
