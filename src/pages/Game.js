@@ -24,11 +24,16 @@ class Game extends React.Component {
   }
 
   componentDidUpdate(_prevProps, prevState) {
+    this.updateTimer(prevState);
+  }
+
+  updateTimer = (prevState) => {
     if (prevState.timer === 0) {
       clearInterval(this.timerInterval);
       this.setState({
         isDisable: true,
         timer: 0,
+        clickAnswer: true,
       });
     }
   }
@@ -101,6 +106,23 @@ class Game extends React.Component {
     }
   };
 
+  nextQuestion = () => {
+    const numberRandom = 0.5;
+    const five = 5;
+    const { indexQuestion, resultsTriviaApi } = this.state;
+    const { history } = this.props;
+    if (indexQuestion < five) {
+      this.setState((prev) => ({
+        indexQuestion: prev.indexQuestion + 1,
+        clickAnswer: false,
+        newArray: [resultsTriviaApi[prev.indexQuestion + 1].correct_answer,
+          ...resultsTriviaApi[prev.indexQuestion + 1].incorrect_answers]
+          .sort(() => Math.random() - numberRandom),
+      }));
+    }
+    history.push('/feedback');
+  }
+
   render() {
     const {
       resultsTriviaApi,
@@ -146,6 +168,20 @@ class Game extends React.Component {
                 </button>
               )) }
             </div>
+            {
+              clickAnswer
+            && (
+              <button
+                type="button"
+                data-testid="btn-next"
+                onClick={ this.nextQuestion }
+              >
+                Next
+
+              </button>
+            )
+            }
+
           </section>
         )}
         </main>
