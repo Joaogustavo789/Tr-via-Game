@@ -1,7 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import { apiTrivia } from '../service/apiTrivia';
 import Header from '../components/Header';
+import { saveScoreAction } from '../redux/actions';
 
 class Game extends React.Component {
   constructor() {
@@ -81,6 +83,24 @@ class Game extends React.Component {
     return 'incorrect-answer';
   }
 
+  verifyCorrectAnswer = (element) => {
+    const { newScore } = this.props;
+    const { resultsTriviaApi, indexQuestion, timer } = this.state;
+    const hardScore = 3;
+    let difficultyScore = resultsTriviaApi[indexQuestion].difficulty;
+    if (difficultyScore === 'hard') {
+      difficultyScore = hardScore;
+    } else if (difficultyScore === 'medium') {
+      difficultyScore = 2;
+    } else if (difficultyScore === 'easy') {
+      difficultyScore = 1;
+    }
+
+    if (resultsTriviaApi[indexQuestion].correct_answer === element) {
+      newScore(timer, difficultyScore);
+    }
+  };
+
   render() {
     const {
       resultsTriviaApi,
@@ -113,7 +133,10 @@ class Game extends React.Component {
                   key={ index }
                   type="button"
                   data-testid={ this.getDataTestIdAnswers(element) }
-                  onClick={ this.answerChosen }
+                  onClick={ () => {
+                    this.answerChosen();
+                    this.verifyCorrectAnswer(element);
+                  } }
                   disabled={ isDisable }
                   className={
                     clickAnswer ? this.altClassNames(element) : ''
@@ -131,10 +154,15 @@ class Game extends React.Component {
   }
 }
 
+const mapDispatchToProps = (dispatch) => ({
+  newScore: (timer, difficulty) => dispatch(saveScoreAction(timer, difficulty)),
+});
+
 Game.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func,
   }).isRequired,
+  newScore: PropTypes.func.isRequired,
 };
 
-export default Game;
+export default connect(null, mapDispatchToProps)(Game);
