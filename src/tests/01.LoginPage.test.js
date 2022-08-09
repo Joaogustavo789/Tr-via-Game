@@ -5,7 +5,6 @@ import userEvent from "@testing-library/user-event";
 import App from '../App'
 
 const { questionsResponse } = require('../../cypress/mocks/questions');
-const { tokenResponse } = require('../../cypress/mocks/token');
 
 describe('Testes de cobertura para tela de Login', () => {
   afterEach(() => {
