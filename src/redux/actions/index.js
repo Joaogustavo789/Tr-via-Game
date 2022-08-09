@@ -9,3 +9,11 @@ export const requireGravatarAction = (gravatarEmail) => ({
   type: types.REQUIRE_GRAVATAR_SUCCESS,
   gravatarEmail: `https://www.gravatar.com/avatar/${gravatarEmail}`,
 });
+
+export const saveScoreAction = (timer, difficulty) => {
+  const questionPoinsts = 10;
+  return ({
+    type: types.SAVE_SCORE,
+    score: questionPoinsts + (timer * difficulty),
+  });
+};
