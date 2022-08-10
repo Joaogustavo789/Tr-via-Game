@@ -2,8 +2,13 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Header from '../components/Header';
+import { resetScoreAction } from '../redux/actions/index';
 
 class Feedback extends Component {
+  componentDidMount() {
+    this.saveInfoLocal();
+  }
+
   feedback = () => {
     const { assertionsNumber } = this.props;
     if (assertionsNumber < +'3') {
@@ -12,8 +17,22 @@ class Feedback extends Component {
     return 'Well Done!';
   }
 
+  saveInfoLocal = () => {
+    const { score, name, gravatarEmail } = this.props;
+    const objRank = {
+      name,
+      score,
+      picture: gravatarEmail,
+    };
+    let rank = [];
+    rank.push(objRank);
+    rank = rank.concat(JSON.parse(localStorage.getItem('ranking') || '[]'));
+    const rankOrd = rank.sort((a, b) => a.name.localeCompare(b.name));
+    localStorage.setItem('ranking', JSON.stringify(rankOrd));
+  }
+
   render() {
-    const { score, assertionsNumber, history: { push } } = this.props;
+    const { score, assertionsNumber, history: { push }, resetScore } = this.props;
     return (
       <div>
         <Header />
@@ -25,7 +44,10 @@ class Feedback extends Component {
         <button
           type="button"
           data-testid="btn-play-again"
-          onClick={ () => push('/') }
+          onClick={ () => {
+            resetScore();
+            push('/');
+          } }
         >
           Play Again
 
@@ -53,6 +75,12 @@ Feedback.propTypes = {
 const mapStateToProps = (state) => ({
   assertionsNumber: state.player.assertions,
   score: state.player.score,
+  name: state.player.name,
+  gravatarEmail: state.player.gravatarEmail,
 });
 
-export default connect(mapStateToProps)(Feedback);
+const mapDispatchToProps = (dispatch) => ({
+  resetScore: () => dispatch(resetScoreAction()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Feedback);

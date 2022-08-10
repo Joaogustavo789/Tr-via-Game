@@ -22,3 +22,7 @@ export const feedbackScoreAction = (assertions) => ({
   type: types.FEEDBACK_SCORE,
   assertions,
 });
+
+export const resetScoreAction = () => ({
+  type: types.RESET_SCORE,
+});
