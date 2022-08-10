@@ -77,6 +77,7 @@ class Game extends React.Component {
   answerChosen = () => {
     this.setState({
       clickAnswer: true,
+      isDisable: true,
     });
     clearInterval(this.timerInterval);
   }
@@ -116,6 +117,7 @@ class Game extends React.Component {
         timer: 30,
         indexQuestion: prev.indexQuestion + 1,
         clickAnswer: false,
+        isDisable: false,
 
       }), () => this.newQuestionArray());
       this.setQuestionTimer();
