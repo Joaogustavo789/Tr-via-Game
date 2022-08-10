@@ -144,4 +144,91 @@ describe('Verificações para a página Game', () => {
     const { location: { pathname } } = history
     expect(pathname).toBe('/feedback');
   });
+
+  test('Verifica funcionamento do timer', async () => {
+    jest.spyOn(global, 'fetch').mockResolvedValue({
+      json: jest.fn().mockResolvedValue(questionsResponse),
+    });
+
+    jest.useFakeTimers();
+    
+    renderWithRouterAndRedux(<App />, initialState, '/game');
+    
+    await waitFor(() => expect(fetch).toHaveBeenCalled());
+    jest.advanceTimersByTime(3000);
+    
+    const timer = screen.getByRole('heading', { level: 3 });
+    expect(timer).toHaveTextContent(27);
+
+    jest.runOnlyPendingTimers();
+    jest.useRealTimers();
+  });
+
+  test('Verifica pontuação para a resposta correta', async () => {
+    jest.spyOn(global, 'fetch').mockResolvedValue({
+      json: jest.fn().mockResolvedValue(questionsResponse),
+    });
+    
+    const { store } = renderWithRouterAndRedux(<App />, initialState, '/game');
+    
+    await waitFor(() => expect(fetch).toHaveBeenCalled());
+
+    const questionButton = screen.getByTestId('correct-answer');
+    userEvent.click(questionButton);
+    
+    const timer = screen.getByRole('heading', { level: 3 });
+    expect(timer).toHaveTextContent(30);
+
+    const score = screen.getByTestId('header-score');
+    expect(score).toHaveTextContent(40);
+
+    expect(store.getState().player.score).toBe(40);
+  });
+
+  test('Verifica pontuação uma para resposta incorreta', async () => {
+    jest.spyOn(global, 'fetch').mockResolvedValue({
+      json: jest.fn().mockResolvedValue(questionsResponse),
+    });
+    
+    const { store } = renderWithRouterAndRedux(<App />, initialState, '/game');
+    
+    await waitFor(() => expect(fetch).toHaveBeenCalled());
+
+    const incorrectQuestionBtn = screen.getByTestId('wrong-answer-0');
+    userEvent.click(incorrectQuestionBtn);
+    
+    const timer = screen.getByRole('heading', { level: 3 });
+    expect(timer).toHaveTextContent(30);
+
+    const score = screen.getByTestId('header-score');
+    expect(score).toHaveTextContent(0);
+
+    expect(store.getState().player.score).toBe(0);
+  });
+
+
+  test('Verifica atualização do timer', async () => {
+    jest.spyOn(global, 'fetch').mockResolvedValue({
+      json: jest.fn().mockResolvedValue(questionsResponse),
+    });
+
+    jest.useFakeTimers();
+    
+    renderWithRouterAndRedux(<App />, initialState, '/game');
+    
+    await waitFor(() => expect(fetch).toHaveBeenCalled());
+    jest.advanceTimersByTime(31000);
+    
+    const timer = screen.getByRole('heading', { level: 3 });
+    expect(timer).toHaveTextContent(0);
+
+    const btnNext = screen.getByTestId('btn-next');
+    expect(btnNext).toBeInTheDocument();
+
+    const questionButton = screen.getByTestId('correct-answer');
+    expect(questionButton).toBeDisabled();
+
+    jest.runOnlyPendingTimers();
+    jest.useRealTimers();
+  });
 });
