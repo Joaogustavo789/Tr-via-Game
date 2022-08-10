@@ -15,7 +15,7 @@ describe('Verificações para a página Game', () => {
       score: 0,
       gravatarEmail: 'https://www.gravatar.com/avatar/e8c7e13f9383093661b25d7fcca181d2'
     }
-  }
+  };
 
   afterEach(() => {
     jest.resetAllMocks();
@@ -112,7 +112,7 @@ describe('Verificações para a página Game', () => {
       json: jest.fn().mockResolvedValue(invalidTokenQuestionsResponse),
     });
 
-    const { history } = renderWithRouterAndRedux(<App />, initialState, '/game')
+    const { history } = renderWithRouterAndRedux(<App />, initialState, '/game');
     
     await waitFor(() => expect(fetch).toHaveBeenCalled());
 
@@ -120,40 +120,26 @@ describe('Verificações para a página Game', () => {
     expect(pathname).toBe('/')
   });
 
-  test('Verifica se ao responder todas as perguntas, o usuario é redirecionado para a página feedback ', async () => {
+  test('Verifica se ao responder todas as perguntas, o usuario é redirecionado para a página feedback', async () => {
     jest.spyOn(global, 'fetch').mockResolvedValue({
       json: jest.fn().mockResolvedValue(questionsResponse),
     });
 
-    const { history } = renderWithRouterAndRedux(<App />, initialState, '/game')
+    const { history } = renderWithRouterAndRedux(<App />, initialState, '/game');
     
     await waitFor(() => expect(fetch).toHaveBeenCalled());
 
     let questionButton = screen.getByTestId('correct-answer');
-    
-    userEvent.click(questionButton)
+    userEvent.click(questionButton);
     let btnNext = screen.getByTestId('btn-next');
-    userEvent.click(btnNext)
+    userEvent.click(btnNext);
 
-    questionButton = screen.getByTestId('correct-answer');
-    userEvent.click(questionButton)
-    btnNext = screen.getByTestId('btn-next');
-    userEvent.click(btnNext)
-
-    questionButton = screen.getByTestId('correct-answer');
-    userEvent.click(questionButton)
-    btnNext = screen.getByTestId('btn-next');
-    userEvent.click(btnNext)
-
-    questionButton = screen.getByTestId('correct-answer');
-    userEvent.click(questionButton)
-    btnNext = screen.getByTestId('btn-next');
-    userEvent.click(btnNext)
-
-    questionButton = screen.getByTestId('correct-answer');
-    userEvent.click(questionButton)
-    btnNext = screen.getByTestId('btn-next');
-    userEvent.click(btnNext)
+    for (let n = 1; n <= 4; n += 1) {
+      questionButton = screen.getByTestId('correct-answer');
+      userEvent.click(questionButton);
+      btnNext = screen.getByTestId('btn-next');
+      userEvent.click(btnNext);
+    }
 
     const { location: { pathname } } = history
     expect(pathname).toBe('/feedback');

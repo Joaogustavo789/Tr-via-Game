@@ -118,7 +118,6 @@ class Game extends React.Component {
         indexQuestion: prev.indexQuestion + 1,
         clickAnswer: false,
         isDisable: false,
-
       }), () => this.newQuestionArray());
       this.setQuestionTimer();
     } else {
@@ -191,11 +190,9 @@ class Game extends React.Component {
                 onClick={ this.nextQuestion }
               >
                 Next
-
               </button>
             )
             }
-
           </section>
         )}
        </main>
