@@ -17,6 +17,7 @@ describe('Testes de cobertura para tela de Login', () => {
     const { location: { pathname } } = history;
     expect(pathname).toBe('/');
 
+    // Confirmar se 'SUA VEZ' permanece
     expect(screen.getByText(/SUA VEZ/i)).toBeInTheDocument();
     expect(screen.getByPlaceholderText(/digite seu nome/i)).toBeInTheDocument();
     expect(screen.getByPlaceholderText(/digite seu e-mail/i)).toBeInTheDocument();
