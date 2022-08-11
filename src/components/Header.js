@@ -22,7 +22,10 @@ class Header extends Component {
             />
           </div>
           <img src={ logo } className="App-logo logo-header" alt="logo" />
-          <h2 data-testid="header-score" className="score">{`Score: ${score}`}</h2>
+          <div>
+            <span className="score">Score</span>
+            <h2 data-testid="header-score" className="score">{score}</h2>
+          </div>
         </header>
       </div>
     );
