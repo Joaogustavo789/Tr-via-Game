@@ -1,24 +1,26 @@
 body {
+  background-image: url('../img/78acaf17a9754952fc3f6dc50102c920\ \(1\).jpg');
+  background-size: 100%;
   box-sizing: border-box;
+  font-family: Lucida Sans , Lucida Sans Regular ,
+    Lucida Grande , Lucida Sans Unicode , Geneva , Verdana , sans-serif;
   margin: 0;
   padding: 0;
 }
 
 .App {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  justify-content: center;
   text-align: center;
+  width: 100%;
 }
 
 .App-logo {
   height: 15vmin;
   pointer-events: none;
-}
-
-.red-border {
-  border: 1px solid red;
-}
-
-.green-border {
-  border: 1px solid green;
 }
 
 @media ( prefers-reduced-motion : no-preference ) {
@@ -28,6 +30,7 @@ body {
   }
 }
 
+/*
 .App-header {
   align-items: center;
   background-color: #282c34;
@@ -37,7 +40,7 @@ body {
   font-size: calc(10px + 2vmin);
   justify-content: center;
   min-height: 100vh;
-}
+} */
 
 .App-link {
   color: #61dafb;
@@ -68,4 +71,26 @@ body {
 
 .incorrect-answer {
   border: 3px solid red;
+}
+
+.title-settings {
+  font-size: 40px;
+  margin-bottom: 30px;
+}
+
+.comming {
+  font-size: 30px;
+}
+
+.meme {
+  margin-top: 30px;
+  width: 18%;
+}
+
+button {
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: not-allowed;
 }

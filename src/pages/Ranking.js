@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { resetScoreAction } from '../redux/actions/index';
+import logo from '../img/trivia.png';
+import '../style/Ranking.css';
 
 class Ranking extends Component {
   constructor() {
@@ -24,39 +26,62 @@ class Ranking extends Component {
     const { history: { push }, resetScore } = this.props;
     const { rank } = this.state;
     return (
-      <div>
-        <h2 data-testid="ranking-title">Ranking</h2>
-        <table>
-          <thead>
-            <tr>
-              <th>Imagem</th>
-              <th>Name</th>
-              <th>Score</th>
-            </tr>
-          </thead>
-          <tbody>
-            {
-              rank.map((person, index) => (
-                <tr key={ person.name }>
-                  <td><img src={ person.picture } alt="Foto da pessoa" /></td>
-                  <td data-testid={ `player-name-${index}` }>{person.name}</td>
-                  <td data-testid={ `player-score-${index}` }>{person.score}</td>
-                </tr>
-              ))
-            }
-          </tbody>
-        </table>
-        <button
-          type="button"
-          data-testid="btn-go-home"
-          onClick={ () => {
-            resetScore();
-            push('/');
-          } }
-        >
-          home
+      <div className="container-game">
+        <img src={ logo } className="App-logo logo-rank" alt="logo" />
+        <div className="container-main">
+          <h2 data-testid="ranking-title" className="category">Ranking</h2>
+          <div className="scroll">
+            <table>
 
-        </button>
+              <th className="title-table">Imagem</th>
+              <th className="title-table">Name</th>
+              <th className="title-table">Score</th>
+
+              <tbody>
+                {
+                  rank.map((person, index) => (
+                    <tr key={ person.name }>
+                      <td>
+                        <img
+                          src={ person.picture }
+                          alt="Foto da pessoa"
+                          className="img-table"
+                        />
+
+                      </td>
+                      <td
+                        data-testid={ `player-name-${index}` }
+                        className="info"
+                      >
+                        {person.name}
+
+                      </td>
+                      <td
+                        data-testid={ `player-score-${index}` }
+                        className="info"
+                      >
+                        {person.score}
+
+                      </td>
+                    </tr>
+                  ))
+                }
+              </tbody>
+            </table>
+          </div>
+          <button
+            type="button"
+            data-testid="btn-go-home"
+            onClick={ () => {
+              resetScore();
+              push('/');
+            } }
+            className="btn-home"
+          >
+            Home
+
+          </button>
+        </div>
       </div>
     );
   }

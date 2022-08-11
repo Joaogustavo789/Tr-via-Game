@@ -1,0 +1,29 @@
+.container-header {
+  align-items: center;
+  display: flex;
+  height: 100px;
+  justify-content: space-around;
+  width: 1330px;
+}
+
+.logo-header {
+  margin-left: -100px;
+  margin-top: -50px;
+}
+
+.container-name {
+  align-items: center;
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: space-between;
+  width: 250px;
+}
+
+.img-gravatar {
+  border-radius: 100%;
+  max-width: 50px;
+}
+
+.score {
+  font-size: 30px;
+}
