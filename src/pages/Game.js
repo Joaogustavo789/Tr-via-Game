@@ -94,21 +94,20 @@ class Game extends React.Component {
   verifyCorrectAnswer = (element) => {
     const { newScore, feedbackAssertions } = this.props;
     const { resultsTriviaApi, indexQuestion, timer } = this.state;
-    const hardScore = 3;
-    let difficultyScore = resultsTriviaApi[indexQuestion].difficulty;
-    if (difficultyScore === 'hard') {
-      difficultyScore = hardScore;
-    } else if (difficultyScore === 'medium') {
-      difficultyScore = 2;
-    } else if (difficultyScore === 'easy') {
-      difficultyScore = 1;
-    }
+    const difficultyScore = resultsTriviaApi[indexQuestion].difficulty;
 
     if (resultsTriviaApi[indexQuestion].correct_answer === element) {
-      newScore(timer, difficultyScore);
+      newScore(timer, this.verifyDifficulty(difficultyScore));
       feedbackAssertions();
     }
   };
+
+  verifyDifficulty = (difficultyScore) => {
+    const hardScore = 3;
+    if (difficultyScore === 'hard') return hardScore;
+    if (difficultyScore === 'medium') return 2;
+    return 1;
+  }
 
   nextQuestion = () => {
     const { history } = this.props;
@@ -119,7 +118,6 @@ class Game extends React.Component {
         indexQuestion: prev.indexQuestion + 1,
         clickAnswer: false,
         isDisable: false,
-
       }), () => this.newQuestionArray());
       this.setQuestionTimer();
     } else {
@@ -194,11 +192,9 @@ class Game extends React.Component {
                 className="btn-next"
               >
                 Next
-
               </button>
             )
             }
-
           </section>
         )}
        </main>
