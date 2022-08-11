@@ -86,9 +86,9 @@ class Game extends React.Component {
   altClassNames = (element) => {
     const { resultsTriviaApi, indexQuestion } = this.state;
     if (element === resultsTriviaApi[indexQuestion].correct_answer) {
-      return 'correct-answer';
+      return 'correct-answer buttons-answer';
     }
-    return 'incorrect-answer';
+    return 'incorrect-answer buttons-answer';
   }
 
   verifyCorrectAnswer = (element) => {
@@ -174,9 +174,8 @@ class Game extends React.Component {
                   } }
                   disabled={ isDisable }
                   className={
-                    clickAnswer ? this.altClassNames(element) : ''
+                    clickAnswer ? this.altClassNames(element) : 'buttons-answer'
                   }
-                  id="buttons-answer"
                 >
                   {element}
                 </button>
