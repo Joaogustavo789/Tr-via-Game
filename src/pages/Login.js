@@ -2,8 +2,10 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import md5 from 'crypto-js/md5';
 import { connect } from 'react-redux';
+import logo from '../img/trivia.png';
 import { apiTriviaToken } from '../service/apiTrivia';
 import { saveNameAction, requireGravatarAction } from '../redux/actions/index';
+import '../style/Login.css';
 
 class Login extends Component {
   constructor() {
@@ -40,44 +42,55 @@ class Login extends Component {
     const { playerName, playerEmail } = this.state;
     const { history: { push }, saveName, requireGravatar } = this.props;
     return (
-      <div>
-        <form>
+      <div className="container-login">
+        <header className="App-header">
+          <img src={ logo } className="App-logo logo-login" alt="logo" />
+        </header>
+        <span className="container-form">.</span>
+        <form className="container-input">
+          <h2 className="title-login">LOGIN</h2>
           <input
-            placeholder="Digite seu nome"
+            placeholder="Name"
             type="text"
             data-testid="input-player-name"
             name="playerName"
             value={ playerName }
             onChange={ this.handleChange }
+            className="input-login"
           />
           <input
-            placeholder="Digite seu e-mail"
+            placeholder="Email"
             type="email"
             data-testid="input-gravatar-email"
             name="playerEmail"
             value={ playerEmail }
             onChange={ this.handleChange }
+            className="input-login"
           />
-          <button
-            type="button"
-            data-testid="btn-play"
-            onClick={ async () => {
-              await this.saveTokenToLocal();
-              requireGravatar(this.convertEmail());
-              saveName(playerName);
-              push('/game');
-            } }
-            disabled={ this.verifyInputs() }
-          >
-            Play
-          </button>
-          <button
-            type="button"
-            data-testid="btn-settings"
-            onClick={ () => push('/settings') }
-          >
-            Configurações
-          </button>
+          <div className="container-button">
+            <button
+              type="button"
+              data-testid="btn-play"
+              onClick={ async () => {
+                await this.saveTokenToLocal();
+                requireGravatar(this.convertEmail());
+                saveName(playerName);
+                push('/game');
+              } }
+              disabled={ this.verifyInputs() }
+              className="btn-login"
+            >
+              Play
+            </button>
+            <button
+              type="button"
+              data-testid="btn-settings"
+              onClick={ () => push('/settings') }
+              className="btn-login"
+            >
+              Settings
+            </button>
+          </div>
         </form>
       </div>
     );

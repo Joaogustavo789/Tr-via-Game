@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { apiTrivia } from '../service/apiTrivia';
 import Header from '../components/Header';
 import { saveScoreAction, feedbackScoreAction } from '../redux/actions';
+import '../style/Game.css';
 
 class Game extends React.Component {
   constructor() {
@@ -32,7 +33,7 @@ class Game extends React.Component {
       clearInterval(this.timerInterval);
       this.setState({
         isDisable: true,
-        timer: 0,
+        timer: 30,
         clickAnswer: true,
       });
     }
@@ -85,9 +86,9 @@ class Game extends React.Component {
   altClassNames = (element) => {
     const { resultsTriviaApi, indexQuestion } = this.state;
     if (element === resultsTriviaApi[indexQuestion].correct_answer) {
-      return 'correct-answer';
+      return 'correct-answer buttons-answer';
     }
-    return 'incorrect-answer';
+    return 'incorrect-answer buttons-answer';
   }
 
   verifyCorrectAnswer = (element) => {
@@ -144,23 +145,23 @@ class Game extends React.Component {
      isDisable } = this.state;
 
    return (
-     <div>
+     <div className="container-game">
        <Header />
-       <main>
-         <h3>
+       <main className="container-main">
+         <h3 className="timer">
            {timer}
          </h3>
          { resultsTriviaApi.length > 0
         && (
           <section>
-            <h1 data-testid="question-category">
+            <h1 data-testid="question-category" className="category">
               {
                 `Category: ${resultsTriviaApi[indexQuestion].category}`
               }
             </h1>
-            <h2 data-testid="question-text">
+            <p data-testid="question-text" className="question">
               { resultsTriviaApi[indexQuestion].question }
-            </h2>
+            </p>
             <div data-testid="answer-options">
               { newArray.map((element, index) => (
                 <button
@@ -173,7 +174,7 @@ class Game extends React.Component {
                   } }
                   disabled={ isDisable }
                   className={
-                    clickAnswer ? this.altClassNames(element) : ''
+                    clickAnswer ? this.altClassNames(element) : 'buttons-answer'
                   }
                 >
                   {element}
@@ -187,6 +188,7 @@ class Game extends React.Component {
                 type="button"
                 data-testid="btn-next"
                 onClick={ this.nextQuestion }
+                className="btn-next"
               >
                 Next
               </button>

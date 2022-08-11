@@ -1,0 +1,75 @@
+@font-face {
+  font-family: DS-DIGIB;
+  src: url('../fonts/DS-DIGIB.TTF');
+}
+
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+.container-game {
+  align-items: center;
+  background-color: rgb(219, 222, 221);
+  border: 3px solid black;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  height: 80%;
+  justify-content: flex-start;
+  width: 70%;
+}
+
+.container-main {
+  align-items: center;
+  background-color: rgb(67, 67, 67);
+  border: 10px ridge rgb(209, 207, 207);
+  border-radius: 20px;
+  box-shadow: 3px 3px 3px 3px black;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  height: 60%;
+  justify-content: center;
+  margin-top: 70px;
+  padding: 10px;
+  width: 70%;
+}
+
+.timer {
+  font-family: DS-DIGIB , Courier New , Courier , monospace;
+  font-size: 70px;
+  margin-bottom: 30px;
+}
+
+.category {
+  font-size: 40px;
+  margin-bottom: 30px;
+}
+
+.question {
+  font-size: 30px;
+  margin-bottom: 30px;
+}
+
+.buttons-answer {
+  border-radius: 10px;
+  font-size: 20px;
+  margin: 10px 5px;
+  padding: 5px 10px;
+}
+
+.buttons-answer:disabled {
+  color: white;
+}
+
+.btn-next {
+  background-color: rgb(30, 130, 30);
+  border-radius: 10px;
+  color: white;
+  font-size: 20px;
+  font-weight: 900;
+  margin-top: 10px;
+  padding: 5px 30px;
+}
